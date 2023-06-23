@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from .models import Item
 from .forms import ItemForm
 from django.template import loader
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 # Create your views here.
 
@@ -15,6 +17,12 @@ def index(request):
 
     }
     return render(request, 'food/index.html', context)
+
+class IndexClassView(ListView):
+    model = Item
+    template_name = 'food/index.html'
+    context_object_name = 'item_list'
+
 
 
 def item(request):
@@ -28,6 +36,11 @@ def detail(request, item_id):
 
     }
     return render(request, 'food/detail.html', context)
+
+
+class FoodDetail(DetailView):
+    model = Item
+    template_name = 'food/detail.html'
 
 def create_item(request):
     form = ItemForm(request.POST or None)
